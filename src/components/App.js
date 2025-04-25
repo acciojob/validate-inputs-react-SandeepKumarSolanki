@@ -2,32 +2,32 @@ import React, { useRef, useState } from 'react';
 import './../styles/App.css';
 
 const App = () => {
-  
   const inputRefs = useRef({
-    name : null,
-    address : null,
-    email : null,
-    mobile : null
-  })
+    name: null,
+    address: null,
+    email: null,
+    mobile: null
+  });
 
-  const [errorName , setErrorName] = useState('');
-  const [errorAdd , setErrorAdd] = useState('');
-  const [errorEmail , setErrorEmail] = useState('');
-  const [errorMobile , setErrorMobile] = useState('');
+  const [errorName, setErrorName] = useState('');
+  const [errorAdd, setErrorAdd] = useState('');
+  const [errorEmail, setErrorEmail] = useState('');
+  const [errorMobile, setErrorMobile] = useState('');
 
-  const handleSubmit = (e) =>{
+  const handleSubmit = (e) => {
     e.preventDefault();
+
     setErrorName('');
     setErrorAdd('');
     setErrorEmail('');
     setErrorMobile('');
 
     const name = inputRefs.current.name.value.trim();
-    const address = inputRefs.current.name.value.trim();
+    const address = inputRefs.current.address.value.trim();
     const email = inputRefs.current.email.value.trim();
     const mobile = inputRefs.current.mobile.value.trim();
-    
-    const isValid = true;
+
+    let isValid = true;
 
     // Name validation
     if (!/^[a-zA-Z\s]+$/.test(name)) {
@@ -53,33 +53,37 @@ const App = () => {
       isValid = false;
     }
 
-    if(isValid){
-      alert('Form submitted successfully..')
-      //clear input fields manually
-      inputRefs.current.name= ''
-      inputRefs.current.address=''
-      inputRefs.current.email=''
-      inputRefs.current.mobile=''
+    if (isValid) {
+      alert("Form submitted successfully!");
+
+      // Clear input fields manually
+      inputRefs.current.name.value = '';
+      inputRefs.current.address.value = '';
+      inputRefs.current.email.value = '';
+      inputRefs.current.mobile.value = '';
     }
-  }
+  };
 
   return (
     <div>
       <form onSubmit={handleSubmit}>
-
         <label>Name</label>
-        <input type='text' name='name' ref={el => inputRefs.current.name = el} />
-        <p className='errorMessage' style={{color : 'red'}}>{errorName}</p>
+        <input type="text" name="name" ref={el => inputRefs.current.name = el} />
+        <p className="errorMessage" style={{ color: 'red' }}>{errorName}</p>
+
         <label>Address</label>
-        <input type='text' name='address' ref={el => inputRefs.current.address = el} />
-        <p className='errorMessage' style={{color : 'red'}}>{errorAdd}</p>
+        <input type="text" name="address" ref={el => inputRefs.current.address = el} />
+        <p className="errorMessage" style={{ color: 'red' }}>{errorAdd}</p>
+
         <label>Email</label>
-        <input type='text' name='email' ref={el => inputRefs.current.email = el} />
-        <p className='errorMessage' style={{color : 'red'}}>{errorEmail}</p>
+        <input type="text" name="email" ref={el => inputRefs.current.email = el} />
+        <p className="errorMessage" style={{ color: 'red' }}>{errorEmail}</p>
+
         <label>Mobile</label>
-        <input type='text' name='mobile' ref={el => inputRefs.current.mobile = el} />
-        <p className='errorMessage' style={{color : 'red'}}>{errorMobile}</p>
-        <button type='submit'>Submit</button>
+        <input type="text" name="mobile" ref={el => inputRefs.current.mobile = el} />
+        <p className="errorMessage" style={{ color: 'red' }}>{errorMobile}</p>
+
+        <button type="submit">Submit</button>
       </form>
     </div>
   );
