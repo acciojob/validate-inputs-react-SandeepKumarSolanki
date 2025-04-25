@@ -49,7 +49,7 @@ const App = () => {
 
     // Mobile validation
     if (mobile.length > 10 || !/^\d+$/.test(mobile)) {
-      setErrorMobile("Mobile number should not be more than 10 digits and only contain numbers");
+      setErrorMobile("Mobile number should not be more than 10 characters");
       isValid = false;
     }
 
