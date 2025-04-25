@@ -1,101 +1,88 @@
-
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react';
 import './../styles/App.css';
 
 const App = () => {
-  const [user, setUser] = useState({
-    name: '',
-    address: '',
-    email: '',
-    mobile: ''
+  
+  const inputRefs = useRef({
+    name : null,
+    address : null,
+    email : null,
+    mobile : null
   })
 
-  const [errorName, setErrorName] = useState("")
-  const [errorAdd, setErrorAdd] = useState("")
-  const [errorEmail, setErrorEmail] = useState("")
-  const [errorMobile, setErrorMobile] = useState("")
+  const [errorName , setErrorName] = useState('');
+  const [errorAdd , setErrorAdd] = useState('');
+  const [errorEmail , setErrorEmail] = useState('');
+  const [errorMobile , setErrorMobile] = useState('');
 
-  let { name, address, email, mobile } = user
+  const handleSubmit = (e) =>{
+    e.preventDefault();
+    setErrorName('');
+    setErrorAdd('');
+    setErrorEmail('');
+    setErrorMobile('');
 
-  function updateFields(e) {
-    let key = e.target.name
-    let value = e.target.value
-    setUser({ ...user, [key]: value })
-  }
-  function handleSubmit(e) {
-    e.preventDefault()
-    // Reset all errors first
-    setErrorName('')
-    setErrorAdd('')
-    setErrorEmail('')
-    setErrorMobile('')
-    let isValid = true
-
-    // for (let i = 0; i < name.length; i++) {
-    //   const charCode = name.charCodeAt(i)
-    //   if (
-    //     !(charCode >= 65 && charCode <= 90) &&
-    //     !(charCode >= 97 && charCode <= 122) &&
-    //     name[i] !== ' '
-    //   ) {
-    //     setErrorName("Name should contain only letters")
-    //     isValid = false
-    //   }
-    // }
-    let nameChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-    for (let i = 0; i < name.length; i++) {
-      if (!nameChars.includes(name[i])) {
-        setErrorName("Name should contain only letters")
-        isValid = false
-      }
-    }
-    let addressChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
-    for (let i = 0; i < address.length; i++) {
-      if (!addressChars.includes(address[i])) {
-        setErrorAdd("Address should not contain special characters")
-        isValid = false
-      }
-    }
-    if (!email.includes("@") || !email.includes(".com")) {
-      setErrorEmail("Email should contain @ and .com")
-      isValid = false
-    }
-    if (mobile.length > 10) {
-      setErrorMobile("Mobile number should not be more than 10 characters")
-      isValid = false
-    }
+    const name = inputRefs.current.name.value.trim();
+    const address = inputRefs.current.name.value.trim();
+    const email = inputRefs.current.email.value.trim();
+    const mobile = inputRefs.current.mobile.value.trim();
     
-    if (isValid) {
-      setUser({
-        name: '',
-        address: '',
-        email: '',
-        mobile: ''
-      })
+    const isValid = true;
+
+    // Name validation
+    if (!/^[a-zA-Z\s]+$/.test(name)) {
+      setErrorName("Name should contain only letters");
+      isValid = false;
+    }
+
+    // Address validation
+    if (!/^[a-zA-Z0-9\s]+$/.test(address)) {
+      setErrorAdd("Address should not contain special characters");
+      isValid = false;
+    }
+
+    // Email validation
+    if (!email.includes("@") || !email.includes(".com")) {
+      setErrorEmail("Email should contain @ and .com");
+      isValid = false;
+    }
+
+    // Mobile validation
+    if (mobile.length > 10 || !/^\d+$/.test(mobile)) {
+      setErrorMobile("Mobile number should not be more than 10 digits and only contain numbers");
+      isValid = false;
+    }
+
+    if(isValid){
+      alert('Form submitted successfully..')
+      //clear input fields manually
+      inputRefs.current.name= ''
+      inputRefs.current.address=''
+      inputRefs.current.email=''
+      inputRefs.current.mobile=''
     }
   }
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
+
         <label>Name</label>
-        <input type="text" name='name' value={name} onChange={updateFields} />
-        <p className='errorMessage' style={{ color: 'red' }}>{errorName}</p>
-
+        <input type='text' name='name' ref={el => inputRefs.current.name = el} />
+        <p className='errorMessage' style={{color : 'red'}}>{errorName}</p>
         <label>Address</label>
-        <input type="text" name='address' value={address} onChange={updateFields} />
-        <p className='errorMessage' style={{ color: 'red' }}>{errorAdd}</p>
-
+        <input type='text' name='address' ref={el => inputRefs.current.address = el} />
+        <p className='errorMessage' style={{color : 'red'}}>{errorAdd}</p>
         <label>Email</label>
-        <input type="text" name='email' value={email} onChange={updateFields} />
-        <p className='errorMessage' style={{ color: 'red' }}>{errorEmail}</p>
-
+        <input type='text' name='email' ref={el => inputRefs.current.email = el} />
+        <p className='errorMessage' style={{color : 'red'}}>{errorEmail}</p>
         <label>Mobile</label>
-        <input type="text" name='mobile' value={mobile} onChange={updateFields} />
-        <p className='errorMessage' style={{ color: 'red' }}>{errorMobile}</p>
-        <button>Submit</button>
+        <input type='text' name='mobile' ref={el => inputRefs.current.mobile = el} />
+        <p className='errorMessage' style={{color : 'red'}}>{errorMobile}</p>
+        <button type='submit'>Submit</button>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
